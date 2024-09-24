@@ -3,7 +3,6 @@
 "use client";
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import AuthForm from '../../components/AuthForm';
 import LoginPage from '@/components/LoginPage';
 
 const Login: React.FC = () => {
@@ -28,6 +27,7 @@ const Login: React.FC = () => {
     } else {
       const data = await response.json();
       setError(data.detail || 'ログインに失敗しました。ユーザー名またはパスワードを確認してください。');
+      console.log(error)
     }
   };
 

@@ -79,7 +79,7 @@ export const useTasks = () => {
   };
 
   // タスクの削除
-  const deleteTask = async (taskId: number) => {
+  const deleteTask = async (taskId: number | undefined) => {
     try {
       const token = await fetchWithToken();
       await fetch(`${backendUrl}/api/tasks/${taskId}/`, {

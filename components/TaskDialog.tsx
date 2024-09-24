@@ -26,7 +26,7 @@ interface TaskDialogProps {
   onClose: () => void
   onAdd: (task: Task) => void
   onUpdate: (task: Task) => void;
-  onDelete: (id: number) => void;
+  onDelete: (id: number | undefined) => void;
   task?: Task | null
   tabId: number   // タブID
   projectId: number // プロジェクトID
@@ -49,7 +49,7 @@ export function TaskDialog({ isOpen, onClose, onAdd, onUpdate, onDelete, task, t
         purpose: "",
         background: "",
         description: "",
-        scheduled_start_time: null,
+        scheduled_start_time: undefined,
         due_date: null,
         difficulty: 0,
         expected_work_time: 0,

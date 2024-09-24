@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react"
+import React, { useEffect, useCallback } from "react"
 import { motion } from "framer-motion"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import ReactFlow, {
@@ -8,6 +8,9 @@ import ReactFlow, {
   Background,
   useNodesState,
   useEdgesState,
+  Connection,
+  NodeChange,
+  EdgeChange,
 } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { Task } from "../src/types"
@@ -82,7 +85,7 @@ export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
   }, [edges, nodes, projectId]);
 
   // エッジを追加する
-  const onConnect = useCallback((params) => {
+  const onConnect = useCallback((params: Connection) => {
     setEdges((eds) => {
       const newEdges = addEdge(params, eds);
       saveProjectTree(newEdges, nodes); // エッジ追加時にツリーを保存
@@ -107,13 +110,13 @@ export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
   };
 
   // ノード変更時にツリーを保存
-  const handleNodesChange = useCallback((changes) => {
+  const handleNodesChange = useCallback((changes: NodeChange[]) => {
     onNodesChange(changes);
     saveProjectTree(edges, nodes); // ノードが変更されたらツリーを保存
   }, [onNodesChange, edges, nodes, saveProjectTree]);
 
   // エッジ変更時にツリーを保存
-  const handleEdgesChange = useCallback((changes) => {
+  const handleEdgesChange = useCallback((changes: EdgeChange[]) => {
     onEdgesChange(changes);
     saveProjectTree(edges, nodes); // エッジが変更されたらツリーを保存
   }, [onEdgesChange, edges, nodes, saveProjectTree]);
@@ -127,7 +130,7 @@ export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
   const tabColors: { [key: string]: string } = {}
 
   // タブごとの色を割り当てる
-  tasks.forEach((task, index) => {
+  tasks.forEach((task) => {
     if (!tabColors[task.tab]) {
       tabColors[task.tab] = generateColorForTab(Object.keys(tabColors).length)
     }
@@ -165,7 +168,7 @@ export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
           >
             <Controls />
             <MiniMap />
-            <Background variant="dots" gap={12} size={1} />
+            <Background gap={12} size={1} />
           </ReactFlow>
         </div>
       </div>

@@ -13,7 +13,7 @@ interface ReportDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onUpdate: (task: Task) => void;
-  task: Task;
+  task: Task | undefined;
 }
 
 export function ReportDialog({ isOpen, onClose, onUpdate, task }: ReportDialogProps) {

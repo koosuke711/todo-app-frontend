@@ -18,7 +18,7 @@
     purpose?: string;
     background?: string;
     description?: string;
-    scheduled_start_time?: string | null;  // 日付はISO 8601の文字列形式
+    scheduled_start_time?: string;  // 日付はISO 8601の文字列形式
     due_date?: string | null;    // 締め切り（追加）
     actual_start_time?: string | null;  // 開始時
     completion_date?: string | null;  // 完了時

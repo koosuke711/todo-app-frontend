@@ -52,11 +52,11 @@ const useTaskNotifications = (): void => {
           body: `タスク「${task.title}」がもうすぐ始まります！`,
         });
 
-        // // 通知がクリックされたときのアクション
-        // notification.onclick = () => {
-        //   window.focus();
-        //   window.location.href = `/tasks/${task.id}`; // タスク詳細ページに遷移
-        // };
+        // 通知がクリックされたときのアクション
+        notification.onclick = () => {
+          window.focus();
+          window.location.href = `/tasks/${task.id}`; // タスク詳細ページに遷移
+        };
       }
     };
 

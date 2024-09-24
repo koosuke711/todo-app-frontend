@@ -2,7 +2,6 @@
 "use client";
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import AuthForm from '../../components/AuthForm';
 import SignupPage from '@/components/SignupPage';
 
 const Register: React.FC = () => {

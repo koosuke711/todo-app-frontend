@@ -31,7 +31,7 @@ export const useTabs = () => {
   }, []);
 
   // 新しいプロジェクトを追加（渡すのは新しいプロジェクト名）
-  const addTab = async (projectId: number, newTabName: string) => {
+  const addTab = async (projectId: number | undefined, newTabName: string) => {
     const token = await fetchWithToken();
     fetch(`${backendUrl}/api/tabs/`, {
       method: 'POST',
@@ -47,7 +47,7 @@ export const useTabs = () => {
   };
 
   // タブ名を更新
-  const updateTab = async (projectId: number, tabId: number, updatedTabName: string) => {
+  const updateTab = async (projectId: number | undefined, tabId: number, updatedTabName: string) => {
     console.log(tabId)
     console.log(updatedTabName)
     const token = await fetchWithToken();

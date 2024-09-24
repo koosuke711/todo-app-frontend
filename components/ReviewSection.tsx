@@ -28,7 +28,12 @@ export function ReviewSection({ tasks, onUpdate }: ReviewSectionProps) {
   };
 
   const renderReviewSection = (title: string, sortKey: keyof Task) => {
-    const sortedTasks = [...completedTasks].sort((a, b) => (b[sortKey] ?? 0) - (a[sortKey] ?? 0));
+    const sortedTasks = [...completedTasks].sort((a, b) => {
+      const aValue = typeof a[sortKey] === 'number' ? a[sortKey] : 0;  // a[sortKey] が number 型か確認
+      const bValue = typeof b[sortKey] === 'number' ? b[sortKey] : 0;  // b[sortKey] が number 型か確認
+      return bValue - aValue;
+    });
+    
 
     return (
       <div className="mb-6">

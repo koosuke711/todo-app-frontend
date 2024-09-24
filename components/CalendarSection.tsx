@@ -14,19 +14,26 @@ export function CalendarSection({ allTask }: CalendarSectionProps) {
 
   // 選択した日付に対するタスクをフィルタリング
   const tasksForSelectedDate = allTask.filter(task => {
+    if (!task.scheduled_start_time) return false; // scheduled_start_time が存在しない場合はフィルタから除外
+
     const taskDateString = new Date(task.scheduled_start_time).toISOString().split('T')[0];
     const selectedDateString = selectedDate?.toISOString().split('T')[0];
+
     return selectedDateString === taskDateString;
   });
 
+
   // タスクがある日付をISOフォーマットで保持
   const datesWithTasks = allTask.reduce((acc, task) => {
+    if (!task.scheduled_start_time) return acc; // scheduled_start_time が存在しない場合はスキップ
+
     const date = new Date(task.scheduled_start_time).toISOString().split('T')[0];
     if (!acc.includes(date)) {
       acc.push(date);
     }
     return acc;
   }, [] as string[]);
+
 
   return (
     <div className="flex w-full mb-4">
@@ -55,7 +62,7 @@ export function CalendarSection({ allTask }: CalendarSectionProps) {
                 <li key={task.id} className="flex items-center justify-between bg-white p-2 rounded-md shadow-sm">
                   <span>{task.title}</span>
                   <span className="text-sm text-gray-500">
-                    {format(new Date(task.scheduled_start_time), "HH:mm", { locale: ja })}
+                    {task.scheduled_start_time ? format(new Date(task.scheduled_start_time), "HH:mm", { locale: ja }) : "時間未設定"}
                   </span>
                 </li>
               ))}

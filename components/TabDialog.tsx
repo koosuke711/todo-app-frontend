@@ -13,10 +13,10 @@ import { Tab } from "@/src/types"
 interface TabDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  projectId: number;
+  projectId: number | undefined;
   tab: Tab | null;
-  onAdd: (projectId: number, tabName: string) => void;
-  onUpdate: (projectId:number, tabId: number, tabName: string) => void;
+  onAdd: (projectId: number | undefined, tabName: string) => void;
+  onUpdate: (projectId:number | undefined, tabId: number, tabName: string) => void;
 }
 
 export function TabDialog({ isOpen, onClose, projectId, tab, onAdd, onUpdate }: TabDialogProps) {

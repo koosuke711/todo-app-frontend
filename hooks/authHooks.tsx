@@ -66,7 +66,7 @@ export async function fetchWithToken(): Promise<string | null> {
 }
 
 // Hook to handle account deletion
-export const useDeleteAccount = (user_id: number) => {
+export const useDeleteAccount = (user_id: number | null) => {
   const router = useRouter();
   const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
   

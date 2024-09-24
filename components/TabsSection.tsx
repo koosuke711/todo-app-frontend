@@ -17,8 +17,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 interface TabsSectionProps {
   selectedProject: Project | null;
   tabs: Tab[];
-  addTab: (projectId: number, tabName: string) => void;
-  updateTab: (projectId: number, tabId: number, tabName: string) => void;
+  addTab: (projectId: number | undefined, tabName: string) => void;
+  updateTab: (projectId: number | undefined, tabId: number, tabName: string) => void;
   deleteTab: (tabId: number) => void;
 }
 
@@ -29,7 +29,7 @@ export function TabsSection({
   updateTab,
   deleteTab,
 }: TabsSectionProps) {
-  const [selectedTab, setSelectedTab] = useState<string | null>(null);
+  const [, setSelectedTab] = useState<string | null>(null);
   const [isTabDialogOpen, setIsTabDialogOpen] = useState(false);
   const [editingTab, setEditingTab] = useState<Tab | null>(null); // 編集中のタブ
   const { allTask, addTask, updateTask, deleteTask } = useTasks();

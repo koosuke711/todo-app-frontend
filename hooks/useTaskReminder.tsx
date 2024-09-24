@@ -33,6 +33,7 @@ export const useTaskReminder = (allTask: Task[]) => {
         const notification = new Notification("Task Reminder", {
           body: `タスク「${task.title}」が始まります！`,
         });
+        console.log(notification)
 
         // ステータスが「進行中」になるまで5分ごとにチェック
         const intervalId = setInterval(() => {
@@ -49,6 +50,7 @@ export const useTaskReminder = (allTask: Task[]) => {
             const notification = new Notification("Task Reminder", {
               body: `タスク「${task.title}」が開始されていません。進行中にしてください！`,
             });
+            console.log(notification)
           }
         }, 1 * 60 * 1000); // 5分ごとに通知を送る
 

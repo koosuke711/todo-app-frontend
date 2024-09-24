@@ -12,7 +12,7 @@ interface TaskListProps {
   currentTab: number;
   addTask: (task: Task) => void;
   updateTask: (task: Task) => void;
-  deleteTask:(id: number) => void;
+  deleteTask:(id: number | undefined) => void;
   projectId: number;
 }
 
@@ -20,7 +20,7 @@ export function TaskList({ tasks, currentTab, addTask, updateTask, deleteTask, p
   // console.log('タブ内の渡ってきたタブ情報', currentTab)
   // console.log('タブ内の渡ってきたprojectId', projectId)
 
-  const [taskToEdit, setTaskToEdit] = useState<Task | null>(null);
+  const [taskToEdit, setTaskToEdit] = useState<Task | undefined>(undefined);
   const [isTaskDialogOpen, setIsTaskDialogOpen] = useState(false)
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
@@ -30,7 +30,7 @@ export function TaskList({ tasks, currentTab, addTask, updateTask, deleteTask, p
   // })
 
   const handleAddTaskClick = () => {
-    setTaskToEdit(null);
+    setTaskToEdit(undefined);
     setIsEditMode(false);
     setIsTaskDialogOpen(true);
   };
