@@ -11,7 +11,6 @@ export const useTasks = () => {
   // console.log(selectedProject)
 
   useEffect(() => {
-    console.log('allTaskを取得している');
     const fetchTask = async () => {
       try {
         const token = await fetchWithToken();
