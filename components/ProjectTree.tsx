@@ -49,8 +49,8 @@ export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
         const project = await response.json();
         const { tree_data } = project;
 
-        setNodes(tree_data.nodes || []);
-        setEdges(tree_data.edges || []);
+        setNodes(tree_data?.nodes || []);
+        setEdges(tree_data?.edges || []);
       } else {
         console.error("Failed to fetch project tree");
       }
