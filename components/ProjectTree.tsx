@@ -138,7 +138,7 @@ export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
 
   return (
     <div className="flex h-[calc(100vh-240px)]">
-      <div className="w-1/3 border-r pr-4">
+      <div className="w-1/4 border-r pr-4">
         <h3 className="text-lg font-semibold mb-2">タスク一覧</h3>
         <ScrollArea className="h-full">
           {tasks.map((task) => (
@@ -155,9 +155,9 @@ export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
           ))}
         </ScrollArea>
       </div>
-      <div className="w-2/3 pl-4">
+      <div className="w-3/4 pl-4">
         <h3 className="text-lg font-semibold mb-2">プロジェクトツリー</h3>
-        <div style={{ width: '100%', height: '100%' }}>
+        <div style={{ width: '75%', height: '95%' }}>
           <ReactFlow
             nodes={nodes}
             edges={edges}
