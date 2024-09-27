@@ -145,7 +145,7 @@ export function TaskList({ tasks, currentTab, addTask, updateTask, deleteTask, p
           </motion.div>
         ))}
       </motion.div>
-      <Button variant="outline" className="w-full justify-start mt-4" onClick={() => handleAddTaskClick()}>
+      <Button variant="outline" className="w-5/6 justify-start mt-4" onClick={() => handleAddTaskClick()}>
         <Plus className="mr-2 h-4 w-4" />
         新規タスク
       </Button>
