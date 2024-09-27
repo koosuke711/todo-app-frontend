@@ -63,7 +63,7 @@ export function TabsSection({
   return (
     <>
       <ScrollArea className="overflow-y-auto">
-        <div className="w-full p-4 flex flex-col">
+        <div className="w-screen l p-4 flex flex-col">
           <CalendarSection allTask={allTask} /> 
           {selectedProject ? (
             <Tabs onValueChange={setSelectedTab}>
