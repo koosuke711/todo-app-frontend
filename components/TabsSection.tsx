@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { X, Plus } from "lucide-react"
@@ -9,10 +9,10 @@ import { ReviewSection } from "./ReviewSection"
 import { ProjectTree } from "./ProjectTree"
 import { TabDialog } from "./TabDialog"
 import { Project, Tab, Task } from '@/src/types';
-import { useTasks } from '@/hooks/useTasks';
 import { useTaskReminder } from '@/hooks/useTaskReminder';
 import { CalendarSection } from './CalendarSection';
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { TaskContext } from '@/hooks/TaskContext';
 
 interface TabsSectionProps {
   selectedProject: Project | null;
@@ -32,7 +32,8 @@ export function TabsSection({
   const [, setSelectedTab] = useState<string | null>(null);
   const [isTabDialogOpen, setIsTabDialogOpen] = useState(false);
   const [editingTab, setEditingTab] = useState<Tab | null>(null); // 編集中のタブ
-  const { allTask, addTask, updateTask, deleteTask } = useTasks();
+  // const { allTask, addTask, updateTask, deleteTask } = useTasks();
+  const { allTask, addTask, updateTask, deleteTask } = useContext(TaskContext);
   const [tasks, setTasks] = useState<Task[]>([]);  // 選ばれたプロジェクトのタスクを管理するステート
   
   // ここで通知を送る関数を実行する
@@ -46,6 +47,8 @@ export function TabsSection({
     } else {
       setTasks([]);  // プロジェクトが選ばれていない場合は空にする
     }
+
+    console.log('allTaskが変わったタイミングで変わっているか', allTask)
   }, [selectedProject, allTask]);  // selectedProject または allTask が変わるたびに実行
 
   // 新しいタブを作成
@@ -108,7 +111,7 @@ export function TabsSection({
                 </div>
               </div>
               <TabsContent value="振り返り">
-                <ReviewSection tasks={tasks} onUpdate={updateTask}/>
+                <ReviewSection tasks={tasks}/>
               </TabsContent>
               <TabsContent value="プロジェクトツリー">
                 <ProjectTree tasks={tasks} projectId={selectedProject.id} />

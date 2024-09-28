@@ -6,12 +6,12 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Task } from "../src/types"
 import { ReportDialog } from './ReportDialog';
 
+
 interface ReviewSectionProps {
   tasks: Task[];
-  onUpdate: (task: Task) => void;
 }
 
-export function ReviewSection({ tasks, onUpdate }: ReviewSectionProps) {
+export function ReviewSection({ tasks }: ReviewSectionProps) {
   const [completedTasks, setCompletedTasks] = useState<Task[]>([]);
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
   const [taskToEdit, setTaskToEdit] = useState<Task>();
@@ -68,7 +68,6 @@ export function ReviewSection({ tasks, onUpdate }: ReviewSectionProps) {
       <ReportDialog
         isOpen={isReportDialogOpen}
         onClose={() => setIsReportDialogOpen(false)}
-        onUpdate={onUpdate}
         task={taskToEdit}
       />
     </ScrollArea>

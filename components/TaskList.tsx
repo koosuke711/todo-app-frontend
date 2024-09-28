@@ -1,4 +1,4 @@
-import React, { useState }  from "react"
+import React, { useContext, useState }  from "react"
 import { TaskDialog } from "./TaskDialog"
 import { ReportDialog } from "./ReportDialog"
 import { motion } from "framer-motion"
@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Settings, Plus } from "lucide-react"
 import { Task } from "../src/types"
+import { TaskContext } from "@/hooks/TaskContext"
 
 interface TaskListProps {
   tasks: Task[];
@@ -16,18 +17,13 @@ interface TaskListProps {
   projectId: number;
 }
 
-export function TaskList({ tasks, currentTab, addTask, updateTask, deleteTask, projectId }: TaskListProps) {
-  // console.log('タブ内の渡ってきたタブ情報', currentTab)
-  // console.log('タブ内の渡ってきたprojectId', projectId)
+export function TaskList({ tasks, currentTab, projectId }: TaskListProps) {
 
   const [taskToEdit, setTaskToEdit] = useState<Task | undefined>(undefined);
   const [isTaskDialogOpen, setIsTaskDialogOpen] = useState(false)
   const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-  // console.log('isOpen', isTaskDialogOpen)
-  // tasks.map((task) => {
-  //   console.log(task.tab)
-  // })
+  const { updateTask } = useContext(TaskContext);
 
   const handleAddTaskClick = () => {
     setTaskToEdit(undefined);
@@ -152,9 +148,6 @@ export function TaskList({ tasks, currentTab, addTask, updateTask, deleteTask, p
       <TaskDialog
         isOpen={isTaskDialogOpen}
         onClose={() => setIsTaskDialogOpen(false)}
-        onAdd={addTask}
-        onUpdate={updateTask}
-        onDelete={deleteTask}
         task={taskToEdit}
         tabId={currentTab}
         projectId={projectId}
@@ -163,7 +156,6 @@ export function TaskList({ tasks, currentTab, addTask, updateTask, deleteTask, p
       <ReportDialog
         isOpen={isReportDialogOpen}
         onClose={() => setIsReportDialogOpen(false)}
-        onUpdate={updateTask}
         task={taskToEdit}
       />
     </ScrollArea>
