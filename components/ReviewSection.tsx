@@ -66,11 +66,11 @@ export function ReviewSection({ tasks, onUpdate }: ReviewSectionProps) {
       {renderReviewSection("超過時間(分)", "overtime")}
 
       <ReportDialog
-          isOpen={isReportDialogOpen}
-          onClose={() => setIsReportDialogOpen(false)}
-          onUpdate={onUpdate}
-          task={taskToEdit}
-        />
+        isOpen={isReportDialogOpen}
+        onClose={() => setIsReportDialogOpen(false)}
+        onUpdate={onUpdate}
+        task={taskToEdit}
+      />
     </ScrollArea>
   )
 }

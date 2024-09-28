@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react"
+import React, { useEffect, useCallback, useState } from "react"
 import { motion } from "framer-motion"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import ReactFlow, {
@@ -15,6 +15,7 @@ import ReactFlow, {
 import 'reactflow/dist/style.css'
 import { Task } from "../src/types"
 import { fetchWithToken } from "@/hooks/authHooks"
+import { TaskDialog } from "./TaskDialog"
 
 interface ProjectTreeProps {
   tasks: Task[];
@@ -31,6 +32,9 @@ export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
   const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
   const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+  // const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
+  // const [taskToEdit, setTaskToEdit] = useState<Task>();
   
 
   // プロジェクトツリーを取得
@@ -164,12 +168,22 @@ export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
             onNodesChange={handleNodesChange}  // ノード変更時に保存
             onEdgesChange={handleEdgesChange}  // エッジ変更時に保存
             onConnect={onConnect}              // ノード接続時に保存
+            onNodeClick={(_, node) => console.log('ノードがクリックされました:', node)}
             fitView
           >
             <Controls />
             <MiniMap />
             <Background gap={12} size={1} />
           </ReactFlow>
+
+          {/* <TaskDialog
+            isOpen={isTaskDialogOpen}
+            onClose={() => setIsTaskDialogOpen(false)}
+            task={taskToEdit}
+            tabId={currentTab}
+            projectId={projectId}
+            isEditMode={isEditMode}
+          /> */}
         </div>
       </div>
     </div>
