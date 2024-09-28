@@ -1,4 +1,4 @@
-import React, { useEffect } from "react"
+import React, { useContext, useEffect } from "react"
 import { useForm, Controller } from "react-hook-form"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -20,23 +20,23 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Slider } from "@/components/ui/slider"
 import { format } from "date-fns"
 import { Task } from "../src/types"
+import { TaskContext } from "@/hooks/TaskContext"
 
 interface TaskDialogProps {
   isOpen: boolean
   onClose: () => void
-  onAdd: (task: Task) => void
-  onUpdate: (task: Task) => void;
-  onDelete: (id: number | undefined) => void;
   task?: Task | null
   tabId: number   // タブID
   projectId: number // プロジェクトID
   isEditMode: boolean;
 }
 
-export function TaskDialog({ isOpen, onClose, onAdd, onUpdate, onDelete, task, tabId, projectId, isEditMode }: TaskDialogProps) {
+export function TaskDialog({ isOpen, onClose, task, tabId, projectId, isEditMode }: TaskDialogProps) {
   const { register, setValue, handleSubmit, control, reset } = useForm<Task>({
     defaultValues: task || {}  // 既存タスクがあればそれを初期値にする
   })
+  const { addTask, updateTask, deleteTask } = useContext(TaskContext);
+  
 
   // タスクが変わったときにフォームをリセットし、新しい値をセット
   useEffect(() => {
@@ -55,6 +55,7 @@ export function TaskDialog({ isOpen, onClose, onAdd, onUpdate, onDelete, task, t
         expected_work_time: 0,
       });  // 新規作成の場合はフォームをリセット
     }
+    console.log('タスクダイアログに渡されたタスク', task)
   }, [isEditMode, task, reset]);
 
   const onSubmitTask = (data: Task) => {
@@ -66,10 +67,11 @@ export function TaskDialog({ isOpen, onClose, onAdd, onUpdate, onDelete, task, t
 
     if (isEditMode) {
       // 編集モードでプロジェクトが渡されている場合は更新処理
-      onUpdate(taskData)
+      // onUpdate(taskData)
+      updateTask(taskData)
     } else {
       // 新規作成モード
-      onAdd(taskData)
+      addTask(taskData)
       console.log(`入力したタスク情報:${JSON.stringify(taskData, null, 2)}`);
     }
     // console.log(`入力したタスク情報:${JSON.stringify(taskData, null, 2)}`);
@@ -78,7 +80,7 @@ export function TaskDialog({ isOpen, onClose, onAdd, onUpdate, onDelete, task, t
   }
 
   const handleDelete = () => {
-    onDelete(task?.id)
+    deleteTask(task?.id)
     onClose()
   }
 
