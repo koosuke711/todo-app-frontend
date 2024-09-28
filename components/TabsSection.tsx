@@ -111,7 +111,7 @@ export function TabsSection({
                 </div>
               </div>
               <TabsContent value="振り返り">
-                <ReviewSection tasks={tasks} onUpdate={updateTask}/>
+                <ReviewSection tasks={tasks}/>
               </TabsContent>
               <TabsContent value="プロジェクトツリー">
                 <ProjectTree tasks={tasks} projectId={selectedProject.id} />

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,18 +8,20 @@ import { Slider } from "@/components/ui/slider";
 import { format } from "date-fns";
 import { Task } from "../src/types";
 import { ScrollArea } from "./ui/scroll-area";
+import { TaskContext } from "@/hooks/TaskContext";
 
 interface ReportDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onUpdate: (task: Task) => void;
   task: Task | undefined;
 }
 
-export function ReportDialog({ isOpen, onClose, onUpdate, task }: ReportDialogProps) {
+export function ReportDialog({ isOpen, onClose, task }: ReportDialogProps) {
   const { register, handleSubmit, control, reset } = useForm<Task>({
     defaultValues: task, // 既存タスクのデータを初期値に
   });
+
+  const { updateTask } = useContext(TaskContext);
 
   useEffect(() => {
     if (task) {
@@ -28,7 +30,7 @@ export function ReportDialog({ isOpen, onClose, onUpdate, task }: ReportDialogPr
   }, [task, reset]);
 
   const handleSubmitTask = (data: Task) => {
-    onUpdate(data); // レポートデータを送信
+    updateTask(data); // レポートデータを送信
     onClose();
   };
 

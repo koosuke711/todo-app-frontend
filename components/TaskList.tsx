@@ -18,8 +18,6 @@ interface TaskListProps {
 }
 
 export function TaskList({ tasks, currentTab, projectId }: TaskListProps) {
-  // console.log('タブ内の渡ってきたタブ情報', currentTab)
-  // console.log('タブ内の渡ってきたprojectId', projectId)
 
   const [taskToEdit, setTaskToEdit] = useState<Task | undefined>(undefined);
   const [isTaskDialogOpen, setIsTaskDialogOpen] = useState(false)
@@ -158,7 +156,6 @@ export function TaskList({ tasks, currentTab, projectId }: TaskListProps) {
       <ReportDialog
         isOpen={isReportDialogOpen}
         onClose={() => setIsReportDialogOpen(false)}
-        onUpdate={updateTask}
         task={taskToEdit}
       />
     </ScrollArea>
