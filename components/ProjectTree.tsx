@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from "react"
+import React, { useEffect, useCallback, useState } from "react"
 import { motion } from "framer-motion"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import ReactFlow, {
@@ -15,6 +15,7 @@ import ReactFlow, {
 import 'reactflow/dist/style.css'
 import { Task } from "../src/types"
 import { fetchWithToken } from "@/hooks/authHooks"
+import { TaskDialog } from "./TaskDialog"
 
 interface ProjectTreeProps {
   tasks: Task[];
@@ -31,6 +32,9 @@ export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
   const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
   const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+
+  // const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
+  // const [taskToEdit, setTaskToEdit] = useState<Task>();
   
 
   // プロジェクトツリーを取得
@@ -49,8 +53,8 @@ export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
         const project = await response.json();
         const { tree_data } = project;
 
-        setNodes(tree_data.nodes || []);
-        setEdges(tree_data.edges || []);
+        setNodes(tree_data?.nodes || []);
+        setEdges(tree_data?.edges || []);
       } else {
         console.error("Failed to fetch project tree");
       }
@@ -138,7 +142,7 @@ export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
 
   return (
     <div className="flex h-[calc(100vh-240px)]">
-      <div className="w-1/3 border-r pr-4">
+      <div className="w-1/4 border-r pr-4">
         <h3 className="text-lg font-semibold mb-2">タスク一覧</h3>
         <ScrollArea className="h-full">
           {tasks.map((task) => (
@@ -155,21 +159,31 @@ export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
           ))}
         </ScrollArea>
       </div>
-      <div className="w-2/3 pl-4">
+      <div className="w-3/4 pl-4">
         <h3 className="text-lg font-semibold mb-2">プロジェクトツリー</h3>
-        <div style={{ width: '100%', height: '100%' }}>
+        <div style={{ width: '75%', height: '95%' }}>
           <ReactFlow
             nodes={nodes}
             edges={edges}
             onNodesChange={handleNodesChange}  // ノード変更時に保存
             onEdgesChange={handleEdgesChange}  // エッジ変更時に保存
             onConnect={onConnect}              // ノード接続時に保存
+            onNodeClick={(_, node) => console.log('ノードがクリックされました:', node)}
             fitView
           >
             <Controls />
             <MiniMap />
             <Background gap={12} size={1} />
           </ReactFlow>
+
+          {/* <TaskDialog
+            isOpen={isTaskDialogOpen}
+            onClose={() => setIsTaskDialogOpen(false)}
+            task={taskToEdit}
+            tabId={currentTab}
+            projectId={projectId}
+            isEditMode={isEditMode}
+          /> */}
         </div>
       </div>
     </div>
