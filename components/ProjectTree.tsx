@@ -82,7 +82,7 @@ export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-  const [taskToEdit, setTaskToEdit] = useState<Task | undefined>(undefined);
+  const [taskToEdit, setTaskToEdit] = useState<Task>(tasks[0]);
   const [isTaskDialogOpen, setIsTaskDialogOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
 
