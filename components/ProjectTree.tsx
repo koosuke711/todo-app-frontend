@@ -30,7 +30,6 @@ const formatDate = (dateString: string | undefined) => {
       throw new Error("Invalid date");
     }
     return date.toISOString().split('T')[0]; // 時間部分を削除して日付部分のみ取得
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     console.error("Invalid date format:", dateString);
     return '未設定'; // 無効な日付の場合は「未設定」と表示する
