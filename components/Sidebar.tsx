@@ -53,6 +53,7 @@ export function Sidebar({
           アカウント
         </Button>
       </div>
+      {/* ↓プロジェクトがデカくて歪だから修正 */}
       <h2 className="text-xl font-bold mb-4 p-6">プロジェクト</h2>
       <ScrollArea className="h-[calc(100vh-140px)]">
         <div className="p-4 space-y-2">

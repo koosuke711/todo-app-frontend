@@ -1,6 +1,6 @@
-import React, { useEffect, useCallback, useState } from "react"
-import { motion } from "framer-motion"
-import { ScrollArea } from "@/components/ui/scroll-area"
+import React, { useEffect, useCallback, useState } from "react";
+import { motion } from "framer-motion";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import ReactFlow, {
   addEdge,
   MiniMap,
@@ -11,11 +11,60 @@ import ReactFlow, {
   Connection,
   NodeChange,
   EdgeChange,
-} from 'reactflow'
-import 'reactflow/dist/style.css'
-import { Task } from "../src/types"
-import { fetchWithToken } from "@/hooks/authHooks"
-import { TaskDialog } from "./TaskDialog"
+  Node,
+  Handle,
+  Position,
+} from 'reactflow';
+import 'reactflow/dist/style.css';
+import { Task } from "../src/types";
+import { fetchWithToken } from "@/hooks/authHooks";
+import { TaskDialog } from "./TaskDialog";
+
+// 日付を「YYYY-MM-DD」形式にフォーマットする関数
+const formatDate = (dateString: string | undefined) => {
+  if (!dateString) return '未設定';
+  try {
+    // タイムゾーン情報を削除してからDateオブジェクトを作成
+    const date = new Date(dateString.includes("+") ? dateString.split("+")[0] : dateString);
+    if (isNaN(date.getTime())) {
+      throw new Error("Invalid date");
+    }
+    return date.toISOString().split('T')[0]; // 時間部分を削除して日付部分のみ取得
+  } catch {
+    return '未設定'; // 無効な日付の場合は「未設定」と表示する
+  }
+};
+
+
+// カスタムノードのコンポーネントを作成
+const TaskNode = ({ data }: { data: { label: string, start_date: string, due_date: string } }) => {
+  return (
+    <div style={{ padding: 10, borderRadius: 5, border: '1px solid #ddd', background: '#f3f4f6', position: 'relative' }}>
+      {/* 上部ハンドル（ソース） */}
+      <Handle
+        type="source"
+        position={Position.Top}
+        id="top"
+        style={{ background: '#555' }}
+      />
+      <strong>{data.label}</strong>
+      <div>開始日: {formatDate(data.start_date)}</div>
+      <div>締切日: {formatDate(data.due_date)}</div>
+      {/* 下部ハンドル（ターゲット） */}
+      <Handle
+        type="target"
+        position={Position.Bottom}
+        id="bottom"
+        style={{ background: '#555' }}
+      />
+    </div>
+  );
+};
+
+// カスタムノードタイプを定義
+const nodeTypes = {
+  taskNode: TaskNode,
+};
 
 interface ProjectTreeProps {
   tasks: Task[];
@@ -29,13 +78,13 @@ const generateColorForTab = (index: number) => {
 }
 
 export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
-  const [nodes, setNodes, onNodesChange] = useNodesState([])
-  const [edges, setEdges, onEdgesChange] = useEdgesState([])
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-  // const [isReportDialogOpen, setIsReportDialogOpen] = useState(false);
-  // const [taskToEdit, setTaskToEdit] = useState<Task>();
-  
+  const [taskToEdit, setTaskToEdit] = useState<Task>(tasks[0]);
+  const [isTaskDialogOpen, setIsTaskDialogOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
 
   // プロジェクトツリーを取得
   const fetchProjectTree = async () => {
@@ -101,9 +150,14 @@ export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
   const addTaskToTree = (task: Task) => {
     const newNode = {
       id: task.id.toString(),
-      data: { label: task.title },
+      data: {
+        label: task.title,
+        start_date: task.scheduled_start_time || '未設定',
+        due_date: task.due_date || '未設定',
+      },
       position: { x: Math.random() * 300, y: Math.random() * 300 },
-      style: { background: tabColors[task.tab] || '#E0E0E0', padding: 10, borderRadius: 5 }
+      style: { background: tabColors[task.tab] || '#E0E0E0', padding: 10, borderRadius: 5 },
+      type: 'taskNode', // カスタムノードタイプを指定
     };
 
     setNodes((nds) => {
@@ -125,20 +179,32 @@ export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
     saveProjectTree(edges, nodes); // エッジが変更されたらツリーを保存
   }, [onEdgesChange, edges, nodes, saveProjectTree]);
 
+  // ノードをダブルクリックしたときにダイアログを開くように変更
+  const handleNodeDoubleClick = useCallback((_: React.MouseEvent, node: Node) => {
+    const clickedTaskId = Number(node.id); // ノードの ID をタスクの ID として取得
+    const clickedTask = tasks.find((task) => task.id === clickedTaskId); // ID に対応するタスクを取得
+
+    if (clickedTask) {
+      setTaskToEdit(clickedTask); // ダイアログに表示するタスクを設定
+      setIsEditMode(true);        // 編集モードに設定
+      setIsTaskDialogOpen(true);  // ダイアログを表示
+    }
+  }, [tasks]);
+
   // 初回レンダリング時にツリーを取得
   useEffect(() => {
     fetchProjectTree();
   }, [projectId]);
 
   // タスクの色を管理
-  const tabColors: { [key: string]: string } = {}
+  const tabColors: { [key: string]: string } = {};
 
   // タブごとの色を割り当てる
   tasks.forEach((task) => {
     if (!tabColors[task.tab]) {
-      tabColors[task.tab] = generateColorForTab(Object.keys(tabColors).length)
+      tabColors[task.tab] = generateColorForTab(Object.keys(tabColors).length);
     }
-  })
+  });
 
   return (
     <div className="flex h-[calc(100vh-240px)]">
@@ -168,22 +234,23 @@ export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
             onNodesChange={handleNodesChange}  // ノード変更時に保存
             onEdgesChange={handleEdgesChange}  // エッジ変更時に保存
             onConnect={onConnect}              // ノード接続時に保存
-            onNodeClick={(_, node) => console.log('ノードがクリックされました:', node)}
+            onNodeDoubleClick={handleNodeDoubleClick} // ノードをダブルクリックでダイアログを開くように変更
             fitView
+            nodeTypes={nodeTypes}              // カスタムノードタイプを指定
           >
             <Controls />
             <MiniMap />
             <Background gap={12} size={1} />
           </ReactFlow>
 
-          {/* <TaskDialog
+          <TaskDialog
             isOpen={isTaskDialogOpen}
             onClose={() => setIsTaskDialogOpen(false)}
             task={taskToEdit}
-            tabId={currentTab}
-            projectId={projectId}
-            isEditMode={isEditMode}
-          /> */}
+            tabId={taskToEdit?.tab}   // 編集するタスクのタブ ID
+            projectId={projectId}     // プロジェクト ID
+            isEditMode={isEditMode}   // 編集モードかどうか
+          />
         </div>
       </div>
     </div>
