@@ -32,10 +32,7 @@ export function ProjectTreeCanvas({
   projectId,
   nodes,
   edges,
-  saveProjectTree,
-  onNodesChange,
   handleNodesChange,
-  onEdgesChange,
   handleEdgesChange,
   onConnect,
   handleNodeDoubleClick,
@@ -59,10 +56,7 @@ export function ProjectTreeCanvas({
         <ReactFlow
           nodes={nodes}
           edges={edges}
-          // onNodesChange={onNodesChange}
-          // onNodesChange={() => handleNodesChange}
           onNodesChange={handleNodesChange}
-          // onEdgesChange={onEdgesChange}
           onEdgesChange={handleEdgesChange}
           onConnect={onConnect}
           onNodeDoubleClick={handleNodeDoubleClick}

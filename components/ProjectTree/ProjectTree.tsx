@@ -15,8 +15,13 @@ import 'reactflow/dist/style.css';
 import { Task } from "../../src/types";
 import { fetchWithToken } from "@/hooks/authHooks";
 import { TaskDialog } from "../TaskDialog";
-import { TaskList } from "./TaskList";
 import { TaskNode } from "./TaskNode";
+import { TaskList } from "./TaskList";
+
+// カスタムノードタイプを定義
+const nodeTypes = {
+  taskNode: TaskNode,
+};
 
 interface ProjectTreeProps {
   tasks: Task[];
@@ -37,10 +42,6 @@ export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
   const [taskToEdit, setTaskToEdit] = useState<Task>(tasks[0]);
   const [isTaskDialogOpen, setIsTaskDialogOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
-
-  const nodeTypes = {
-    taskNode: TaskNode,
-  };
 
   // プロジェクトツリーを取得
   const fetchProjectTree = async () => {
