@@ -1,6 +1,7 @@
 // components/ProjectTreeCanvas.tsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactFlow, { MiniMap, Controls, Background, Node, Edge, Connection, NodeChange, EdgeChange } from 'reactflow';
+import 'reactflow/dist/style.css';
 import { Task } from '../../src/types';
 import { TaskDialog } from '../TaskDialog';
 import { TaskNode } from './TaskNode';
@@ -13,7 +14,10 @@ interface ProjectTreeCanvasProps {
   edges: Edge[];
   setEdges: React.Dispatch<React.SetStateAction<Edge[]>>;
   tabColors: { [key: string]: string };
+  saveProjectTree: (updatedEdges: Edge[], updatedNodes: Node[]) => void;
+  onNodesChange: (changes: NodeChange[]) => void;
   handleNodesChange: (changes: NodeChange[]) => void;
+  onEdgesChange: (changes: EdgeChange[]) => void;
   handleEdgesChange: (changes: EdgeChange[]) => void;
   onConnect: (params: Connection) => void;
   handleNodeDoubleClick: (_: React.MouseEvent, node: Node) => void;
@@ -28,7 +32,10 @@ export function ProjectTreeCanvas({
   projectId,
   nodes,
   edges,
+  saveProjectTree,
+  onNodesChange,
   handleNodesChange,
+  onEdgesChange,
   handleEdgesChange,
   onConnect,
   handleNodeDoubleClick,
@@ -42,7 +49,8 @@ export function ProjectTreeCanvas({
   };
 
   console.log(nodes)
-  console.log(edges)
+  // console.log(edges)
+  console.log('キャンバスのレンダリング')
 
   return (
     <div className="w-3/4 pl-4">
@@ -51,7 +59,10 @@ export function ProjectTreeCanvas({
         <ReactFlow
           nodes={nodes}
           edges={edges}
+          // onNodesChange={onNodesChange}
+          // onNodesChange={() => handleNodesChange}
           onNodesChange={handleNodesChange}
+          // onEdgesChange={onEdgesChange}
           onEdgesChange={handleEdgesChange}
           onConnect={onConnect}
           onNodeDoubleClick={handleNodeDoubleClick}
