@@ -206,6 +206,9 @@ export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
     }
   });
 
+  console.log(nodes)
+  console.log(edges)
+
   return (
     <div className="flex h-[calc(100vh-240px)]">
       <div className="w-1/4 border-r pr-4">

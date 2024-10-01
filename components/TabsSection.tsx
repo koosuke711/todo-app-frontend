@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { X, Plus } from "lucide-react"
 import { TaskList } from './TaskList';
 import { ReviewSection } from "./ReviewSection"
+// import { ProjectTree } from "./ProjectTree/ProjectTree"
 import { ProjectTree } from "./ProjectTree"
 import { TabDialog } from "./TabDialog"
 import { Project, Tab, Task } from '@/src/types';
