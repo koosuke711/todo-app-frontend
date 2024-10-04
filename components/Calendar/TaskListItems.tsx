@@ -12,12 +12,12 @@ interface TaskListItemProps {
 
 export function TaskListItem({ task, onEditClick }: TaskListItemProps) {
   return (
-    <li className="flex items-center justify-between bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200">
+    <li 
+      className="flex items-center justify-between bg-white p-3 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200" 
+      onClick={() => onEditClick(task)}
+    >
       <div className="flex items-center space-x-3">
-        <span
-          onClick={() => onEditClick(task)}
-          className="font-medium text-primary hover:text-primary/80 cursor-pointer transition-colors duration-200"
-        >
+        <span className="font-medium text-primary hover:text-primary/80 cursor-pointer transition-colors duration-200" >
           {task.title}
         </span>
       </div>
