@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { Project } from '../src/types';
 import { fetchWithToken } from './authHooks';
+import { Node, Edge} from 'reactflow';
 
 // プロジェクト関連のロジックをカスタムフックにまとめる
 export const useProjects = () => {
@@ -85,6 +86,59 @@ export const useProjects = () => {
       .catch((error) => console.error('Error deleting project:', error));
   };
 
+  // プロジェクトツリーを取得
+  const fetchProjectTree = async (projectId: number) => {
+    try {
+      const token = await fetchWithToken(); // JWTトークン取得
+      const response = await fetch(`${backendUrl}/api/projects/${projectId}/`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        const project = await response.json();
+        const { tree_data } = project;
+
+        // setNodes(tree_data?.nodes || []);
+        // setEdges(tree_data?.edges || []);
+
+        return tree_data;
+      } else {
+        console.error("Failed to fetch project tree");
+      }
+    } catch (error) {
+      console.error('Error fetching project tree:', error);
+    }
+  };
+
+  // ツリーを保存
+  const saveProjectTree = async (projectId: number, updatedEdges: Edge[], updatedNodes: Node[]) => {
+    try {
+      const token = await fetchWithToken(); // JWTトークン取得
+      const treeData = { nodes: updatedNodes, edges: updatedEdges };
+
+      const response = await fetch(`${backendUrl}/api/projects/${projectId}/save_tree/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify(treeData),
+      });
+
+      if (!response.ok) {
+        console.error('Failed to save project tree');
+      } else {
+        console.log('ツリーが保存されました');
+      }
+    } catch (error) {
+      console.error('Error saving project tree:', error);
+    }
+  };
+
   return {
     projects,
     selectedProject,
@@ -92,5 +146,7 @@ export const useProjects = () => {
     addProject,
     updateProject, // プロジェクト名の更新
     deleteProject, // プロジェクトの削除
+    fetchProjectTree,
+    saveProjectTree,
   };
 };

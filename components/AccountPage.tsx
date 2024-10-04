@@ -27,7 +27,7 @@ export default function AccountPage() {
     // 初期のユーザー情報を取得する
     const fetchUserData = async () => {
       try {
-        const token = await fetchWithToken()
+        const token = await fetchWithToken();
         const response = await fetch(`${backendUrl}/api/users/me/`, {
           method: 'GET',
           headers: {

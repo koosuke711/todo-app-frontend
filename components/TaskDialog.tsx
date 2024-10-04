@@ -55,7 +55,6 @@ export function TaskDialog({ isOpen, onClose, task, tabId, projectId, isEditMode
         expected_work_time: 0,
       });  // 新規作成の場合はフォームをリセット
     }
-    console.log('タスクダイアログに渡されたタスク', task)
   }, [isEditMode, task, reset]);
 
   const onSubmitTask = (data: Task) => {
