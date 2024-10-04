@@ -11,7 +11,7 @@ import { ProjectTree } from "./ProjectTree/ProjectTree"
 import { TabDialog } from "./TabDialog"
 import { Project, Tab, Task } from '@/src/types';
 import { useTaskReminder } from '@/hooks/useTaskReminder';
-import { CalendarSection } from './CalendarSection';
+import { CalendarSection } from './Calendar/CalendarSection';
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { TaskContext } from '@/hooks/TaskContext';
 

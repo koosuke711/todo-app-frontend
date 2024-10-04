@@ -4,6 +4,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
 import { Task } from '@/src/types';
+import { TaskDialog } from '../TaskDialog';
+import { TaskListItem } from './TaskListItems';
 
 interface CalendarSectionProps {
   allTask: Task[];  // タスクの配列を受け取る
@@ -11,6 +13,15 @@ interface CalendarSectionProps {
 
 export function CalendarSection({ allTask }: CalendarSectionProps) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+  const [isTaskDialogOpen, setIsTaskDialogOpen] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [taskToEdit, setTaskToEdit] = useState<Task>(allTask[0]);
+
+  const handleEditTaskClick = (task: Task) => {
+    setTaskToEdit(task);
+    setIsEditMode(true);
+    setIsTaskDialogOpen(true);
+  };
 
   // 選択した日付に対するタスクをフィルタリング
   const tasksForSelectedDate = allTask.filter(task => {
@@ -59,12 +70,11 @@ export function CalendarSection({ allTask }: CalendarSectionProps) {
           {tasksForSelectedDate.length > 0 ? (
             <ul className="space-y-2">
               {tasksForSelectedDate.map(task => (
-                <li key={task.id} className="flex items-center justify-between bg-white p-2 rounded-md shadow-sm">
-                  <span>{task.title}</span>
-                  <span className="text-sm text-gray-500">
-                    {task.scheduled_start_time ? format(new Date(task.scheduled_start_time), "HH:mm", { locale: ja }) : "時間未設定"}
-                  </span>
-                </li>
+                <TaskListItem 
+                 key={task.id}
+                 task={task}
+                 onEditClick={handleEditTaskClick}
+                />
               ))}
             </ul>
           ) : (
@@ -72,6 +82,14 @@ export function CalendarSection({ allTask }: CalendarSectionProps) {
           )}
         </ScrollArea>
       </div>
+      <TaskDialog
+        isOpen={isTaskDialogOpen}
+        onClose={() => setIsTaskDialogOpen(false)}
+        task={taskToEdit}
+        tabId={taskToEdit?.tab}   // 編集するタスクのタブ ID
+        projectId={taskToEdit?.project}     // プロジェクト ID
+        isEditMode={isEditMode}   // 編集モードかどうか
+      />
     </div>
   );
 }

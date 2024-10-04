@@ -35,7 +35,6 @@ const generateColorForTab = (index: number) => {
 };
 
 export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
-
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
