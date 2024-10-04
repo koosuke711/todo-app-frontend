@@ -54,7 +54,7 @@ export function Sidebar({
         </Button>
       </div>
       {/* ↓プロジェクトがデカくて歪だから修正 */}
-      <h2 className="text-xl font-bold mb-4 p-6">プロジェクト</h2>
+      <h1 className="text-xl font-bold mb-auto mt-6 mx-6">マイプロジェクト</h1>
       <ScrollArea className="h-[calc(100vh-140px)]">
         <div className="p-4 space-y-2">
           {/* プロジェクト一覧をmap */}

@@ -13,10 +13,10 @@ import ReactFlow, {
 } from 'reactflow';
 import 'reactflow/dist/style.css';
 import { Task } from "../../src/types";
-import { fetchWithToken } from "@/hooks/authHooks";
 import { TaskDialog } from "../TaskDialog";
 import { TaskNode } from "./TaskNode";
 import { TaskList } from "./TaskList";
+import { useProjects } from "@/hooks/useProjects";
 
 // カスタムノードタイプを定義
 const nodeTypes = {
@@ -31,74 +31,25 @@ interface ProjectTreeProps {
 // 動的に色を生成する関数
 const generateColorForTab = (index: number) => {
   const hue = (index * 137.5) % 360; // 黄金角を使用して色相をずらす
-  return `hsl(${hue}, 70%, 80%)`; // 彩度70%、明度80%で色を生成
-}
+  return `hsl(${hue}, 70%, 70%)`; // 彩度70%、明度60%で色を生成
+};
 
 export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
+
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
   const [taskToEdit, setTaskToEdit] = useState<Task>(tasks[0]);
   const [isTaskDialogOpen, setIsTaskDialogOpen] = useState(false);
   const [isEditMode, setIsEditMode] = useState(false);
 
-  // プロジェクトツリーを取得
-  const fetchProjectTree = async () => {
-    try {
-      const token = await fetchWithToken(); // JWTトークン取得
-      const response = await fetch(`${backendUrl}/api/projects/${projectId}/`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-
-      if (response.ok) {
-        const project = await response.json();
-        const { tree_data } = project;
-
-        setNodes(tree_data?.nodes || []);
-        setEdges(tree_data?.edges || []);
-      } else {
-        console.error("Failed to fetch project tree");
-      }
-    } catch (error) {
-      console.error('Error fetching project tree:', error);
-    }
-  };
-
-  // ツリーを保存
-  const saveProjectTree = useCallback(async (updatedEdges = edges, updatedNodes = nodes) => {
-    try {
-      const token = await fetchWithToken(); // JWTトークン取得
-      const treeData = { nodes: updatedNodes, edges: updatedEdges };
-
-      const response = await fetch(`${backendUrl}/api/projects/${projectId}/save_tree/`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-        body: JSON.stringify(treeData),
-      });
-
-      if (!response.ok) {
-        console.error('Failed to save project tree');
-      } else {
-        console.log('ツリーが保存されました');
-      }
-    } catch (error) {
-      console.error('Error saving project tree:', error);
-    }
-  }, [edges, nodes, projectId]);
+  const { fetchProjectTree, saveProjectTree } = useProjects();
 
   // エッジを追加する
   const onConnect = useCallback((params: Connection) => {
     setEdges((eds) => {
       const newEdges = addEdge(params, eds);
-      saveProjectTree(newEdges, nodes); // エッジ追加時にツリーを保存
+      saveProjectTree(projectId, newEdges, nodes); // エッジ追加時にツリーを保存
       return newEdges;
     });
   }, [nodes, saveProjectTree]);
@@ -111,29 +62,30 @@ export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
         label: task.title,
         start_date: task.scheduled_start_time || '未設定',
         due_date: task.due_date || '未設定',
+        tab: task.tab,
+        color: tabColors[task.tab]
       },
       position: { x: Math.random() * 300, y: Math.random() * 300 },
-      style: { background: tabColors[task.tab] || '#E0E0E0', padding: 10, borderRadius: 5 },
       type: 'taskNode', // カスタムノードタイプを指定
     };
 
     setNodes((nds) => {
       const newNodes = [...nds, newNode];
-      saveProjectTree(edges, newNodes); // 追加時にツリーを保存
+      saveProjectTree(projectId, edges, newNodes); // 追加時にツリーを保存
       return newNodes;
     });
   };
 
-  // ノード変更時にツリーを保存
+  // ノード座標変更時にツリーを保存
   const handleNodesChange = useCallback((changes: NodeChange[]) => {
     onNodesChange(changes);
-    saveProjectTree(edges, nodes); // ノードが変更されたらツリーを保存
+    saveProjectTree(projectId, edges, nodes); // ノードが変更されたらツリーを保存
   }, [onNodesChange, edges, nodes, saveProjectTree]);
 
   // エッジ変更時にツリーを保存
   const handleEdgesChange = useCallback((changes: EdgeChange[]) => {
     onEdgesChange(changes);
-    saveProjectTree(edges, nodes); // エッジが変更されたらツリーを保存
+    saveProjectTree(projectId, edges, nodes); // エッジが変更されたらツリーを保存
   }, [onEdgesChange, edges, nodes, saveProjectTree]);
 
   // ノードをダブルクリックしたときにダイアログを開くように変更
@@ -150,12 +102,35 @@ export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
 
   // 初回レンダリング時にツリーを取得
   useEffect(() => {
-    fetchProjectTree();
-  }, [projectId]);
+    const SetProjectTree = async () => {
+      const TreeData = await fetchProjectTree(projectId);
+      const updatedTreeData = TreeData.nodes.map((node: Node) => {
+        const updatedTask = tasks.find((task) => task.id.toString() === node.id);
+  
+        // 対応するタスクが存在し、かつノードの内容がタスクと異なる場合にノードを更新する
+        if (updatedTask) {
+          return {
+            ...node,
+            data: {
+              ...node.data,
+              label: updatedTask.title,
+              start_date: updatedTask.scheduled_start_time || '未設定',
+              due_date: updatedTask.due_date || '未設定',
+            },
+          };
+        }
+        return node; // ノードに変更がなければ元のノードを返す
+      });
+      setNodes(updatedTreeData || []);
+      setEdges(TreeData?.edges || []);
+    }
+
+    SetProjectTree();
+  }, [projectId, tasks]);
+
 
   // タスクの色を管理
   const tabColors: { [key: string]: string } = {};
-
   // タブごとの色を割り当てる
   tasks.forEach((task) => {
     if (!tabColors[task.tab]) {
@@ -163,8 +138,7 @@ export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
     }
   });
 
-  console.log(nodes)
-  console.log(edges)
+  console.log('nodes', nodes)
 
   return (
     <div className="flex h-[calc(100vh-240px)]">

@@ -49,7 +49,6 @@ export function TabsSection({
       setTasks([]);  // プロジェクトが選ばれていない場合は空にする
     }
 
-    console.log('allTaskが変わったタイミングで変わっているか', allTask)
   }, [selectedProject, allTask]);  // selectedProject または allTask が変わるたびに実行
 
   // 新しいタブを作成
