@@ -103,7 +103,8 @@ export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
   useEffect(() => {
     const SetProjectTree = async () => {
       const TreeData = await fetchProjectTree(projectId);
-      const updatedTreeData = TreeData.nodes.map((node: Node) => {
+      const updatedTreeData = TreeData?.nodes
+      ? TreeData.nodes.map((node: Node) => {
         const updatedTask = tasks.find((task) => task.id.toString() === node.id);
   
         // 対応するタスクが存在し、かつノードの内容がタスクと異なる場合にノードを更新する
@@ -119,7 +120,8 @@ export function ProjectTree({ tasks, projectId }: ProjectTreeProps) {
           };
         }
         return node; // ノードに変更がなければ元のノードを返す
-      });
+      })
+      : null ;
       setNodes(updatedTreeData || []);
       setEdges(TreeData?.edges || []);
     }
