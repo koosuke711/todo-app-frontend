@@ -38,12 +38,12 @@ export function ReviewSection({ tasks }: ReviewSectionProps) {
     return (
       <div className="mb-6">
         <h3 className="text-lg font-semibold mb-2">{title}</h3>
-        <Card>
+        <Card className='w-1/2'> 
           <CardContent className="p-4">
             {sortedTasks.map((task) => (
               <motion.div
                 key={task.id}
-                className="flex items-center justify-between py-2 px-2 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer"
+                className="flex items-center justify-between py-2 px-4 rounded-lg hover:bg-gray-100 transition-colors duration-200 cursor-pointer"
                 whileHover={{ scale: 1.02 }}
                 onClick={() => handleCompleteTask(task)}
               >
