@@ -6,11 +6,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
 
 interface SignupPageProps {
-  onSubmit: (username: string, password: string) => void;
+  onSubmit: (username: string, email: string, password: string) => void;
 }
 
 export default function SignupPage({ onSubmit }: SignupPageProps) {
   const [username, setUsername] = useState("")
+  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [confirmPassword, setConfirmPassword] = useState("")
 
@@ -20,8 +21,8 @@ export default function SignupPage({ onSubmit }: SignupPageProps) {
       alert("パスワードが一致しません")
       return
     }
-    onSubmit(username, password)
-    console.log("Signup attempt with:", { username, password })
+    onSubmit(username, email, password)
+    console.log("Signup attempt with:", { username, email, password })
   }
 
   return (
@@ -39,6 +40,16 @@ export default function SignupPage({ onSubmit }: SignupPageProps) {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="email">メールアドレス</Label>
+              <Input
+                id="email"
+                type="text"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
