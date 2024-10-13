@@ -9,13 +9,13 @@ const Register: React.FC = () => {
   const router = useRouter();
   const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
 
-  const handleRegister = async (username: string, password: string) => {
+  const handleRegister = async (username: string, email: string, password: string) => {
     const response = await fetch(`${backendUrl}/api/users/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ username, password }),
+      body: JSON.stringify({ username, email, password }),
     });
 
     if (response.ok) {
