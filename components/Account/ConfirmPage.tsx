@@ -4,17 +4,33 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
+import { useSearchParams } from "next/navigation"
 
-interface ConfirmPageProps {
-  onSubmit: (newPassword: string) => void;
-}
-
-export default function ConfirmPage({ onSubmit }: ConfirmPageProps) {
+export default function ConfirmPage() {
   const [newPassword, setnewPassword] = useState("")
+  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
+  const searchParams = useSearchParams();
+  const uid = searchParams.get("uid")
+  const token = searchParams.get("token")
+
+  const handleResetRequest = async (new_password: string) => {
+    const response = await fetch(`${backendUrl}/api/users/reset-password-confirm/`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ uid, token, new_password })
+    });
+
+    if (response.ok) {
+        alert("パスワードが再設定されました")
+        console.log(response)
+    }
+}
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onSubmit(newPassword)
+    handleResetRequest(newPassword)
     // ここにログイン処理を実装
     console.log("Login attempt with:", { newPassword })
   }
