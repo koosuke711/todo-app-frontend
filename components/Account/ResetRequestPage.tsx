@@ -5,26 +5,26 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import Link from "next/link"
 
-interface LoginPageProps {
-  onSubmit: (username: string, password: string) => void;
+interface ResetRequestPageProps {
+  onSubmit: (username: string, email: string) => void;
 }
 
-export default function LoginPage({ onSubmit }: LoginPageProps) {
+export default function ResetRequestPage({ onSubmit }: ResetRequestPageProps) {
   const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
+  const [email, setEmail] = useState("")
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onSubmit(username, password)
+    onSubmit(username, email)
     // ここにログイン処理を実装
-    console.log("Login attempt with:", { username, password })
+    console.log("Login attempt with:", { username, email })
   }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <Card className="w-[350px]">
         <CardHeader>
-          <CardTitle className="text-2xl font-bold text-center">ログイン</CardTitle>
+          <CardTitle className="text-2xl font-bold text-center">パスワード再設定</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -39,20 +39,20 @@ export default function LoginPage({ onSubmit }: LoginPageProps) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">パスワード</Label>
+              <Label htmlFor="username">メールアドレス</Label>
               <Input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                id="email"
+                type="text"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
             </div>
-            <Button type="submit" className="w-full">ログイン</Button>
+            <Button type="submit" className="w-full">再設定</Button>
           </form>
           <div className="mt-4 text-center">
-            <Link href="/register" className="text-sm text-blue-600 hover:underline">
-              アカウントをお持ちでない場合はこちらをクリックしてください。
+            <Link href="/login" className="text-sm text-blue-600 hover:underline">
+              ログイン画面へ
             </Link>
           </div>
         </CardContent>

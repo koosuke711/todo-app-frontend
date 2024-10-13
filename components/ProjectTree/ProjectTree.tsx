@@ -12,8 +12,8 @@ import ReactFlow, {
   Node,
 } from 'reactflow';
 import 'reactflow/dist/style.css';
-import { Task } from "../../src/types";
-import { TaskDialog } from "../TaskDialog";
+import { Task } from "@/src/types";
+import { TaskDialog } from "@/components/Dialog/TaskDialog";
 import { TaskNode } from "./TaskNode";
 import { TaskList } from "./TaskList";
 import { useProjects } from "@/hooks/useProjects";

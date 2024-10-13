@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useState, useEffect, ReactNode } from 'react';
-import { Task } from '../src/types';
+import { Task } from '@/src/types';
 import { fetchWithToken } from './authHooks';
 
 // Context の型定義（null を許容しない）

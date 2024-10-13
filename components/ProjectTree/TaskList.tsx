@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Task } from "../../src/types";
+import { Task } from "@/src/types";
 
 interface TaskListProps {
   tasks: Task[];

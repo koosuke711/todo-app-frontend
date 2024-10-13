@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Task } from '../src/types';
+import { Task } from '@/src/types';
 import { fetchWithToken } from './authHooks';
 
 export const useTasks = () => {

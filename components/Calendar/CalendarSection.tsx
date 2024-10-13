@@ -4,7 +4,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { format } from "date-fns";
 import { ja } from "date-fns/locale";
 import { Task } from '@/src/types';
-import { TaskDialog } from '../TaskDialog';
+import { TaskDialog } from '@/components/Dialog/TaskDialog';
 import { TaskListItem } from './TaskListItems';
 
 interface CalendarSectionProps {

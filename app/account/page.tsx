@@ -3,7 +3,7 @@
 "use client";
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import AccountPage from '@/components/AccountPage';
+import AccountPage from '@/components/Account/AccountPage';
 import { useAuthCheck } from '@/hooks/authHooks';
 
 const Account: React.FC = () => {

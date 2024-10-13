@@ -2,7 +2,7 @@
 "use client";
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import SignupPage from '@/components/SignupPage';
+import SignupPage from '@/components/Account/SignupPage';
 
 const Register: React.FC = () => {
   const [error, setError] = useState('');

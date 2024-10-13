@@ -28,7 +28,7 @@ export default function AccountPage() {
     const fetchUserData = async () => {
       try {
         const token = await fetchWithToken();
-        const response = await fetch(`${backendUrl}/api/users/me/`, {
+        const response = await fetch(`${backendUrl}/api/users/`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ export default function AccountPage() {
         })
         const data = await response.json()
         // ユーザーIDと名前をセット
-        setUser({ id: data.id, name: data.username })
+        setUser({ id: data[0].id, name: data[0].username })
       } catch (error) {
         console.error('Error fetching user data:', error)
       }

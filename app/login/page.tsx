@@ -3,7 +3,7 @@
 "use client";
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import LoginPage from '@/components/LoginPage';
+import LoginPage from '@/components/Account/LoginPage';
 
 const Login: React.FC = () => {
   const [error, setError] = useState('');

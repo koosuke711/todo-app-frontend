@@ -8,7 +8,7 @@ import { TaskList } from './TaskList';
 import { ReviewSection } from "./ReviewSection"
 import { ProjectTree } from "./ProjectTree/ProjectTree"
 // import { ProjectTree } from "./ProjectTree"
-import { TabDialog } from "./TabDialog"
+import { TabDialog } from "./Dialog/TabDialog"
 import { Project, Tab, Task } from '@/src/types';
 import { useTaskReminder } from '@/hooks/useTaskReminder';
 import { CalendarSection } from './Calendar/CalendarSection';

@@ -19,7 +19,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Slider } from "@/components/ui/slider"
 import { format } from "date-fns"
-import { Task } from "../src/types"
+import { Task } from "@/src/types"
 import { TaskContext } from "@/hooks/TaskContext"
 
 interface TaskDialogProps {
