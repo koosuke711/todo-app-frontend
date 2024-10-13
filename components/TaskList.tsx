@@ -1,11 +1,11 @@
 import React, { useContext, useState }  from "react"
-import { TaskDialog } from "./TaskDialog"
-import { ReportDialog } from "./ReportDialog"
+import { TaskDialog } from "./Dialog/TaskDialog"
+import { ReportDialog } from "./Dialog/ReportDialog"
 import { motion } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Settings, Plus } from "lucide-react"
-import { Task } from "../src/types"
+import { Task } from "@/src/types"
 import { TaskContext } from "@/hooks/TaskContext"
 
 interface TaskListProps {

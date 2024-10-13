@@ -4,8 +4,8 @@ import React, { useState } from 'react';
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { UserCircle, Plus } from "lucide-react"
-import { Project } from "../src/types"
-import { ProjectDialog } from './ProjectDialog';
+import { Project } from "@/src/types"
+import { ProjectDialog } from './Dialog/ProjectDialog';
 import { useRouter } from 'next/navigation';
 
 interface SidebarProps {

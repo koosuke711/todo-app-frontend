@@ -6,8 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Slider } from "@/components/ui/slider";
 import { format } from "date-fns";
-import { Task } from "../src/types";
-import { ScrollArea } from "./ui/scroll-area";
+import { Task } from "@/src/types";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { TaskContext } from "@/hooks/TaskContext";
 
 interface ReportDialogProps {

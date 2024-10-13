@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Tab } from '../src/types';
+import { Tab } from '@/src/types';
 import { fetchWithToken } from './authHooks';
 
 // プロジェクト関連のロジックをカスタムフックにまとめる

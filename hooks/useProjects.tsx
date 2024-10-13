@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
-import { Project } from '../src/types';
+import { Project } from '@/src/types';
 import { fetchWithToken } from './authHooks';
 import { Node, Edge} from 'reactflow';
 

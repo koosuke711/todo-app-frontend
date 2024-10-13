@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { motion } from "framer-motion"
 import { Card, CardContent } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Task } from "../src/types"
-import { ReportDialog } from './ReportDialog';
+import { Task } from "@/src/types"
+import { ReportDialog } from './Dialog/ReportDialog';
 
 
 interface ReviewSectionProps {
