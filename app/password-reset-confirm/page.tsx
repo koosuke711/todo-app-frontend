@@ -1,7 +1,7 @@
 "use client";
 import ConfirmPage from "@/components/Account/ConfirmPage";
 import { useSearchParams } from 'next/navigation'; 
-import React from "react";
+import React, { Suspense } from "react";
 
 export default function PasswordReset() {
     const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -27,8 +27,10 @@ export default function PasswordReset() {
     }
 
     return (
-        <ConfirmPage
-          onSubmit={handleResetRequest}
-        />
+        <Suspense>
+          <ConfirmPage
+            onSubmit={handleResetRequest}
+          />
+        </Suspense>
     );
 }
